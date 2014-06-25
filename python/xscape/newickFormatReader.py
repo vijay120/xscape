@@ -54,9 +54,8 @@ def newickFormatReader(fileHandle):
     return hostDict, parasiteDict, phiDict
 
 def parseNewick(newickString, treeType):
-    """ Queries the user for a newick file name and returns the contents
-        of that file in the dictionary representation used by the xscape
-        tools. """
+    """ Takes in a newick formatted string and a tree type and
+        outputs a tree dictionary in the format specified above."""
     tree = Phylo.read(StringIO(newickString), "newick")
     distanceDict = tree.depths(unit_branch_lengths=True)
     D = {}
