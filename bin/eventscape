@@ -41,8 +41,10 @@ def main():
     startTime = time.time()
     
     print "  Preprocessing..."
-    preCVlist = reconcile.reconcile(parasiteTree, hostTree, phi, \
-                                    switchLo, switchHi, lossLo, lossHi)
+
+    reconciliationAlgorithm = reconcile.ReconcileAlgorithm(switchLo, switchHi, lossLo, lossHi)
+    preCVlist = reconciliationAlgorithm.reconcile(parasiteTree, hostTree, phi)
+
     CandidateCVlist.extend(restrict(preCVlist, \
                                     switchLo, switchHi, lossLo, lossHi))
     print "  Solving..."

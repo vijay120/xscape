@@ -32,10 +32,12 @@ def main():
 
     print "Reconciling trees..."
     startTime = time.time()
-    CVlist = reconcile.reconcile(parasiteTree, hostTree, phi, \
-                                 switchLo, switchHi, lossLo, lossHi)
+
+    reconciliationAlgorithm = reconcile.ReconcileAlgorithm(switchLo, switchHi, lossLo, lossHi)
+    CVlist = reconciliationAlgorithm.reconcile(parasiteTree, hostTree, phi)
+
     endTime = time.time()
-    elapsedTime = endTime- startTime
+    elapsedTime = endTime - startTime
     print "Elapsed time %.2f seconds" % elapsedTime
 
     plotcosts.plotcosts(CVlist, lossLo, lossHi, switchLo, switchHi, \
