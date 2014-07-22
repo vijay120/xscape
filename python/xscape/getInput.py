@@ -10,38 +10,46 @@ def getInput(outputExtension, allowEmptyOutfile=False):
     """ outputExtension is the output file extension (e.g, pdf or csv) """
     
     # Get input file name and try to open it
-    while True:
-        fileName = raw_input("Enter .newick input file name: ")
-        if fileName.endswith(".newick"):
-            try:
-                fileHandle = open(fileName, 'r')
-                break
-            except IOError:
-                print "Error reading file.  Please try again."
-        else:
-            print "File name must end in .newick.  Please try again."
+    # while True:
+    #     fileName = raw_input("Enter .newick input file name: ")
+    #     if fileName.endswith(".newick"):
+    #         try:
+    #             fileHandle = open(fileName, 'r')
+    #             break
+    #         except IOError:
+    #             print "Error reading file.  Please try again."
+    #     else:
+    #         print "File name must end in .newick.  Please try again."
+
+    fileHandle = open("/Users/hmcguest/Downloads/xscape/examples/heliconius.newick", "r")
     
     hostTree, parasiteTree, phi = newickFormatReader(fileHandle)
     fileHandle.close()
 
     # Get output file name
-    while True:
-        if allowEmptyOutfile:
-            outfile = raw_input("Enter ." + outputExtension + " name for output file (or Return): ")
-            if outfile == "": break
-        else:
-            outfile = raw_input("Enter ." + outputExtension + " name for output file: ")
-        if outfile.endswith(outputExtension):
-            break
-        else:
-            print "File name must end in ." + outputExtension + ".  Please try again."   
+    # while True:
+    #     if allowEmptyOutfile:
+    #         outfile = raw_input("Enter ." + outputExtension + " name for output file (or Return): ")
+    #         if outfile == "": break
+    #     else:
+    #         outfile = raw_input("Enter ." + outputExtension + " name for output file: ")
+    #     if outfile.endswith(outputExtension):
+    #         break
+    #     else:
+    #         print "File name must end in ." + outputExtension + ".  Please try again."   
     
     # Get parameter value ranges            
-    switchLo = floatInput("Enter switch low value: ", min_val=0)
-    switchHi = floatInput("Enter switch high value: ", min_val=switchLo)
-    lossLo = floatInput("Enter loss low value: ", min_val=0)
-    lossHi = floatInput("Enter loss high value: ", min_val=lossLo)
+    outfile = "out.pdf"
+    # switchLo = floatInput("Enter switch low value: ", min_val=0.9)
+    # switchHi = floatInput("Enter switch high value: ", min_val=1.2)
+    # lossLo = floatInput("Enter loss low value: ", min_val=0.9)
+    # lossHi = floatInput("Enter loss high value: ", min_val=1.2)
     
+    switchLo = 0.9
+    switchHi = 1.2
+    lossLo = 0.9
+    lossHi = 1.2
+
     return hostTree, parasiteTree, phi, switchLo, switchHi, lossLo, lossHi, outfile
 
 def floatInput(prompt, min_val=-INF, max_val=INF):

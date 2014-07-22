@@ -21,6 +21,7 @@ except ImportError:
 from xscape.commonAnalytic import *
 from xscape import getInput 
 from xscape import reconcile
+from xscape import reconcileEvents
 from xscape.reconcileEvents import *
 
 def main():
@@ -42,19 +43,20 @@ def main():
     
     print "  Preprocessing..."
 
-    reconciliationAlgorithm = reconcile.ReconcileAlgorithm(switchLo, switchHi, lossLo, lossHi)
-    preCVlist = reconciliationAlgorithm.reconcile(parasiteTree, hostTree, phi)
+    # reconciliationAlgorithm = reconcile.ReconcileAlgorithm(switchLo, switchHi, lossLo, lossHi)
+    # preCVlist = reconciliationAlgorithm.reconcile(parasiteTree, hostTree, phi)
 
-    CandidateCVlist.extend(restrict(preCVlist, \
-                                    switchLo, switchHi, lossLo, lossHi))
+    # CandidateCVlist.extend(restrict(preCVlist, \
+    #                                 switchLo, switchHi, lossLo, lossHi))
     print "  Solving..."
-    CVlist = reconcileEvents(parasiteTree, hostTree, phi, \
-                             switchLo, switchHi, lossLo, lossHi)
+    reconciliationAlgorithm = reconcileEvents.ReconcileAlgorithmWithRecordedEvents(switchLo, switchHi, lossLo, lossHi)
+    CVlist = reconciliationAlgorithm.reconcile(parasiteTree, hostTree, phi)
+
     endTime = time.time()
     elapsedTime = endTime- startTime
     print "Elapsed time %.2f seconds" % elapsedTime
-    output(outfile, CVlist, hostTree, lossLo, lossHi, switchLo, switchHi,
-           root=parasiteTree["pTop"][1])
+    output(outfile, CVlist, hostTree, lossLo, lossHi, switchLo, switchHi, 
+            reconciliationAlgorithm.CVevents, reconciliationAlgorithm.CVallEvents, parasiteTree["pTop"][1])
     print "Output written to file ", outfile
 
 def restrict(CVlist, switchLo, switchHi, lossLo, lossHi, regions=None):
@@ -70,13 +72,10 @@ def restrict(CVlist, switchLo, switchHi, lossLo, lossHi, regions=None):
     return restrictedList
       
 def output(outfile, CVlist, hostTree, switchMin, switchMax, lossMin, lossMax,
-           root="Root", regions=None):
+           CVallEvents, CVcommonEvents, root="Root", regions=None):
+
     intersection = CONFIG.intersection
-    if not intersection:
-        global CVallEvents
-    else:
-        global CVcommonEvents
-    
+
     if regions is None:
         regions = getRegions(CVlist, switchMin, switchMax, lossMin, lossMax)
     

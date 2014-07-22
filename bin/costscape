@@ -33,7 +33,7 @@ def main():
     print "Reconciling trees..."
     startTime = time.time()
 
-    reconciliationAlgorithm = reconcile.ReconcileAlgorithm(switchLo, switchHi, lossLo, lossHi)
+    reconciliationAlgorithm = reconcile.ReconcileAlgorithmWithoutRecordedEvents(switchLo, switchHi, lossLo, lossHi)
     CVlist = reconciliationAlgorithm.reconcile(parasiteTree, hostTree, phi)
 
     endTime = time.time()
